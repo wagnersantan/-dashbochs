@@ -1,70 +1,75 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import io
 
 # --- Título do aplicativo ---
 st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Online - 31/03/2025")
 st.write("Bem-vindo ao painel de análise do torneio de xadrez!")
 
 # --- Upload do arquivo pelo usuário ---
-arquivo = st.file_uploader("Carregue o arquivo  do torneio", type=['csv'])
+arquivo = st.file_uploader("Carregue o arquivo do torneio", type=['csv'])
 
-# --- Processamento dos dados se um arquivo for enviado ---
-if arquivo is not None:
-    try:
-        # Carregar o arquivo CSV e definir nomes das colunas
-        colunas = ['Rank', 'Title', 'Nomes dos Enxadristas', 'Rating', 'Points', 'Tie Break', 'Performance']
-        df = pd.read_csv(arquivo, encoding="utf-8", sep=",", header=None, names=colunas)
+# --- Carregar um arquivo CSV padrão se nenhum arquivo for enviado ---
+if arquivo is None:
+    # Exemplo de dados padrão (substitua este CSV com o seu arquivo padrão)
+    csv_padrao = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance
+1,GM,Rogeriox,2500,4.5,0,2700
+2,IM,Camila,2400,4.0,0,2600
+3,FM,João,2300,3.5,0,2500
+"""
+    arquivo = io.StringIO(csv_padrao)
 
-        # Converter a coluna 'Points' para numérico
-        df['Points'] = pd.to_numeric(df['Points'], errors='coerce').fillna(0)
+# --- Processamento dos dados ---
+try:
+    # Definir nomes das colunas
+    colunas = ['Rank', 'Title', 'Nomes dos Enxadristas', 'Rating', 'Points', 'Tie Break', 'Performance']
+    df = pd.read_csv(arquivo, encoding="utf-8", sep=",", header=0, names=colunas)
 
-        # --- Exibição dos Dados ---
-        st.write("### 📊 Dados Brutos do Torneio")
-        st.dataframe(df)
+    # Converter a coluna 'Points' para numérico
+    df['Points'] = pd.to_numeric(df['Points'], errors='coerce').fillna(0)
 
-        # --- Classificação Final ---
-        st.write("### 🏅 Classificação Final")
-        classificacao = df[['Nomes dos Enxadristas', 'Points']].sort_values(by='Points', ascending=False)
-        st.dataframe(classificacao)
+    # --- Exibição dos Dados ---
+    st.write("### 📊 Dados Brutos do Torneio")
+    st.dataframe(df)
 
-        # --- Jogadores com Mais Pontos ---
-        st.write("### 🎖️ Jogadores com Mais Pontos")
-        jogadores_top = classificacao.head(10)  # Exibir apenas os 10 primeiros
-        st.dataframe(jogadores_top)
+    # --- Classificação Final ---
+    st.write("### 🏅 Classificação Final")
+    classificacao = df[['Nomes dos Enxadristas', 'Points']].sort_values(by='Points', ascending=False)
+    st.dataframe(classificacao)
 
-        # --- Filtragem de Jogadores ---
-        jogador_selecionado = st.selectbox("🔍 Selecione um jogador para ver mais detalhes:", df['Nomes dos Enxadristas'].unique())
-        if jogador_selecionado:
-            st.write(df[df['Nomes dos Enxadristas'] == jogador_selecionado])
+    # --- Jogadores com Mais Pontos ---
+    st.write("### 🎖️ Jogadores com Mais Pontos")
+    jogadores_top = classificacao.head(10)  # Exibir apenas os 10 primeiros
+    st.dataframe(jogadores_top)
 
-        # --- Criar Gráfico de Pontuação ---
-        st.write("### 📈 Gráfico de Pontuação dos Jogadores")
+    # --- Filtragem de Jogadores ---
+    jogador_selecionado = st.selectbox("🔍 Selecione um jogador para ver mais detalhes:", df['Nomes dos Enxadristas'].unique())
+    if jogador_selecionado:
+        st.write(df[df['Nomes dos Enxadristas'] == jogador_selecionado])
 
-        # Remover "Rogeriox" da classificação se necessário
-        classificacao = classificacao[classificacao['Nomes dos Enxadristas'] != 'Rogeriox']
+    # --- Criar Gráfico de Pontuação ---
+    st.write("### 📈 Gráfico de Pontuação dos Jogadores")
 
-        # Ordenar os dados em ordem decrescente
-        classificacao = classificacao.sort_values(by='Points', ascending=True)  # Invertido para gráfico de barras horizontais
+    # Remover "Rogeriox" da classificação se necessário
+    classificacao = classificacao[classificacao['Nomes dos Enxadristas'] != 'Rogeriox']
 
-        # Criar o gráfico de barras horizontal
-        fig, ax = plt.subplots(figsize=(12, 6))
-        ax.barh(classificacao['Nomes dos Enxadristas'], classificacao['Points'], color='blue')
+    # Ordenar os dados em ordem decrescente
+    classificacao = classificacao.sort_values(by='Points', ascending=True)  # Invertido para gráfico de barras horizontais
 
-        # Melhorando a formatação do gráfico
-        ax.set_xlabel("Pontos", fontsize=12)
-        ax.set_ylabel("Jogador", fontsize=12)
-        ax.set_title("Pontos por Jogador (Ordenado por Maior Pontuação)", fontsize=14)
-        plt.xticks(fontsize=10)
-        plt.yticks(fontsize=10)
+    # Criar o gráfico de barras horizontal
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.barh(classificacao['Nomes dos Enxadristas'], classificacao['Points'], color='blue')
 
-        # Exibir gráfico no Streamlit
-        st.pyplot(fig)
+    # Melhorando a formatação do gráfico
+    ax.set_xlabel("Pontos", fontsize=12)
+    ax.set_ylabel("Jogador", fontsize=12)
+    ax.set_title("Pontos por Jogador (Ordenado por Maior Pontuação)", fontsize=14)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
 
-    except Exception as e:
-        st.error(f"❌ Erro ao carregar o arquivo: {e}")
+    # Exibir gráfico no Streamlit
+    st.pyplot(fig)
 
-else:
-    st.warning("⚠️ Por favor, carregue um arquivo CSV para visualizar os dados do torneio.")
-
-
+except Exception as e:
+    st.error(f"❌ Erro ao carregar o arquivo: {e}")
