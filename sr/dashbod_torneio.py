@@ -14,9 +14,12 @@ arquivo = st.file_uploader("Carregue o arquivo do torneio", type=['csv'])
 if arquivo is None:
     # Exemplo de dados padrão (substitua este CSV com o seu arquivo padrão)
     csv_padrao = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance
-1,GM,Rogeriox,2500,4.5,0,2700
-2,IM,Camila,2400,4.0,0,2600
-3,FM,João,2300,3.5,0,2500
+1,,Alequis1991,2306,5.0,10.0,2480.2
+2,,maalta7,2004,3.5,5.25,2240.6
+3,,Capital78,2119,2.5,3.75,2017.6
+4,,majCRVG,1800,2.0,2.5,1981.4
+5,,ILUMINATE38,2289,2.0,2.0,1887.6
+6,,Rogeriox,1709,0.0,0.0,1599.6
 """
     arquivo = io.StringIO(csv_padrao)
 
