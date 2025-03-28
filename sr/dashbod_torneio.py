@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import io
 
 # --- Título do aplicativo ---
-st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Online - 31/03/2025")
+st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Online - 23/03/2025")
 st.write("Bem-vindo ao painel de análise do torneio de xadrez!")
 
 # --- Upload do arquivo pelo usuário ---
