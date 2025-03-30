@@ -6,6 +6,10 @@ import io
 # --- Configuração de Estilo ---
 st.set_page_config(page_title="Torneio de Xadrez Online Ilhéus/Itabuna", page_icon="♟️", layout="wide")
 
+# --- Título do aplicativo ---
+st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Online - 30/03/2025")
+st.write("Bem-vindo ao painel de análise do torneio de xadrez!")
+
 # --- Título do Aplicativo ---
 st.markdown(
     "<h1 style='text-align: center; color: gold;'>🏆 Torneio de Xadrez</h1>",
