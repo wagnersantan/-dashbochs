@@ -4,7 +4,7 @@ import plotly.express as px
 import io
 
 # --- Configuração de Estilo ---
-st.set_page_config(page_title="Torneio de Xadrez Online Ilhéus/Itabuna", page_icon="♟️", layout="wide")
+st.set_page_config(page_title="Torneio de Xadrez Online Ilhéus/Itabuna", page_icon="♟️", layout="wide", initial_sidebar_state="collapsed")
 
 # --- Título do aplicativo ---
 st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Online - 30/03/2025")
