@@ -7,7 +7,7 @@ import io
 st.set_page_config(page_title="Torneio de Xadrez Online Ilhéus/Itabuna", page_icon="♟️", layout="wide", initial_sidebar_state="collapsed")
 
 # --- Título do aplicativo ---
-st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Online ")
+st.title("🏆 Torneio de Xadrez Ilhéuse/Itabuna Online ")
 st.write("Bem-vindo ao painel de análise do torneio de xadrez!")
 
 # --- Título do Aplicativo ---
