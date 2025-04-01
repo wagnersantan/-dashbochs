@@ -30,7 +30,7 @@ else:
     st.success(f"{len(arquivos)} arquivo(s) carregado(s) com sucesso!")
 
 # --- Título do aplicativo ---
-st.title("🏆 Torneio de Xadrez Ilhéuse/Itabuna Lichess 2025 ")
+st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Lichess 2025 ")
 st.write("Bem-vindo ao painel de análise do torneio de xadrez!")
 
 st.markdown(
