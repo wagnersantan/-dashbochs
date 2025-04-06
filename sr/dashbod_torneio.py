@@ -55,6 +55,16 @@ if not arquivos:
 3,,HeronSilva10,2012,2.0,3.0,2094.6667,Torneio 30/03/2025
 4,,Hunter04,1906,2.0,3.0,2040.75,Torneio 30/03/2025
 5,,majCRVG,1791,2.0,2.0,1710.3334,Torneio 30/03/2025"""
+    csv_padrao_3= """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
+1,,ILUMINATE38,2304,5.5,16.75,2387.0,Torneio 06/04/2025
+2,,Capital78,2127,5.0,15.0,2288.8333,Torneio 06/04/202
+3,,maalta7,2004,3.0,8.0,1998.1666,Torneio 06/04/202
+4,,majCRVG,1812,3.0,7.0,1862.0,Torneio 06/04/202
+5,,Hunter04,1877,3.0,6.5,2053.8333,Torneio 06/04/202
+6,,Rogeriox,1830,3.0,6.5,1938.0,Torneio 06/04/202
+7,,sualks,1905,3.0,6.0,1859.8,Torneio 06/04/202
+8,,ramonnlucass,2040,2.0,4.5,1772.5,Torneio 06/04/202
+9,,wagsantana,1945,1.5,4.25,1545.8,Torneio 06/04/202"""   
     arquivos = [io.StringIO(csv_padrao_1), io.StringIO(csv_padrao_2)]
 
 # --- Processamento dos Dados ---
