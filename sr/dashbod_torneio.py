@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import io
+import os               # <--- Adicione esta linha!
+from PIL import Image   # <--- E esta também, se ainda não adicionou
 
 # --- Configuração de Estilo ---
 st.set_page_config(
@@ -14,6 +16,14 @@ st.set_page_config(
 # --- Barra Lateral ---
 with st.sidebar:
     st.header("📌 Menu")
+
+    # 🥉 Imagem do 3º Lugar - Daniel Malta
+    st.subheader("🥉 3º Lugar - Daniel Malta")
+    caminho_imagem = os.path.join("sr", "daniel_malta.jpg")
+  # ou ajuste o caminho se estiver em outra pasta
+    imagem = Image.open(caminho_imagem)
+    st.image(imagem, caption="Daniel Malta", use_column_width=True)
+
     arquivos = st.file_uploader(
         "📂 Carregue os arquivos do torneio (CSV)", 
         type=['csv'], 
