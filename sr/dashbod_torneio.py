@@ -36,7 +36,7 @@ else:
     st.success(f"{len(arquivos)} arquivo(s) carregado(s) com sucesso!")
 
 # --- Título ---
-st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Lichess 2026")
+st.title("🏆 Torneio de Xadrez Ilhéus/Itabuna Lichess 2025")
 st.markdown("<h1 style='text-align: center; color: gold;'>🏆 Torneio de Xadrez</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center;'>📊 Painel de Análise</h3>", unsafe_allow_html=True)
 st.divider()
