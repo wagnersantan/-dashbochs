@@ -1,83 +1,75 @@
+# IMPORTS ====================================================
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
+from io import BytesIO
 
-# Caminho do arquivo Excel
-caminho_arquivo_excel = r"C:\Users\wagne\OneDrive\Desktop\evento.xlsx.xlsx"
+# LAYOUT LATERAL ==============================================
+st.set_page_config(layout="wide", page_title="Painel AEROSHAKE XADREZ")
+#st.sidebar.image("logo.png", use_column_width=True)  # <-- MODIFICAÇÃO: logo na lateral
 
-# Lendo os dados do Excel
-# Ajustar para ler apenas a coluna E (cidades) e a coluna F (quantidade de inscritos)
+# CARREGAMENTO DE DADOS =======================================
+caminho_arquivo_excel = '/home/wagne/desenvolvimento/dashbochs/sr/evento.xlsx'
 df = pd.read_excel(caminho_arquivo_excel, usecols="E,F", header=None)
-
-# Corrigir possíveis espaços nos nomes das colunas
 df.columns = ['Nome da Cidade', 'Inscritos']
 
-# Limpar valores nulos e remover espaços extras nos nomes das cidades
-df['Nome da Cidade'] = df['Nome da Cidade'].str.strip()  # Remove espaços extras
-df = df.dropna(subset=['Nome da Cidade'])  # Remove registros com cidade nula
+df['Inscritos'] = pd.to_numeric(df['Inscritos'], errors='coerce')  # ✅ CORREÇÃO AQUI
 
-# Título
+df['Nome da Cidade'] = df['Nome da Cidade'].str.strip()
+df = df.dropna(subset=['Nome da Cidade'])
+
+# TÍTULO E MÉTRICAS =============================================
 st.title("DADOS DA QUARTA EDIÇÃO: AEROSHAKE XADREZ")
 
-# Verificando as colunas do DataFrame
-st.write("Colunas do DataFrame:", df.columns)
+col1, col2 = st.columns(2)  # <-- MODIFICAÇÃO: Métricas em colunas
+col1.metric("Total de Inscritos", int(df['Inscritos'].sum()))
+col2.metric("Total de Cidades", df['Nome da Cidade'].nunique())
 
-# Exibindo um gráfico de barras interativo para as inscrições por cidade
-st.write("### Inscrições por Cidade")
+# GRÁFICOS GERAIS ==============================================
+st.markdown("### Distribuição Geral")
+g1, g2 = st.columns(2)  # <-- MODIFICAÇÃO: Gráficos lado a lado
 
-# Usando Plotly Express para criar o gráfico de barras interativo
-fig_barras = px.bar(df, 
-                    x='Nome da Cidade', 
+fig_barras = px.bar(df,
+                    x='Nome da Cidade',
                     y='Inscritos',
                     labels={'Nome da Cidade': 'Cidade', 'Inscritos': 'Número de Inscritos'},
                     title='Número de Inscritos por Cidade')
-st.plotly_chart(fig_barras)
+g1.plotly_chart(fig_barras, use_container_width=True)
 
-# Gráfico de proporção de inscritos por cidade
-fig_pizza = px.pie(df, 
-                   names='Nome da Cidade', 
-                   values='Inscritos', 
+fig_pizza = px.pie(df,
+                   names='Nome da Cidade',
+                   values='Inscritos',
                    title='Proporção de Inscritos por Cidade')
-st.plotly_chart(fig_pizza)
+g2.plotly_chart(fig_pizza, use_container_width=True)
 
-# Conversão da data de nascimento
-if 'Data de Nascimento' in df.columns:
-    df['Data de Nascimento'] = pd.to_datetime(df['Data de Nascimento'], errors='coerce')
-    df = df.dropna(subset=['Data de Nascimento'])
+# RANKING DAS CIDADES COM MAIS INSCRITOS =======================
+st.markdown("### Top 10 Cidades com Mais Inscritos")  # <-- MODIFICAÇÃO
+ranking = df.groupby("Nome da Cidade")["Inscritos"].sum().sort_values(ascending=False).head(10)
+st.dataframe(ranking.reset_index(), use_container_width=True)
 
-    # Calcular idade corretamente
-    df['Idade'] = (pd.to_datetime('today') - df['Data de Nascimento']).dt.days // 365
-
-    # Gráfico de distribuição de idades
-    st.write('### Distribuição de Idades dos Inscritos')
-    
-    fig, ax = plt.subplots()
-    ax.hist(df['Idade'], bins=10, edgecolor="black")
-    st.pyplot(fig)
-
-# Filtro de cidade
+# FILTRO DE CIDADE ============================================
+st.markdown("### Análise por Cidade")
 cidade_selecionada = st.selectbox("Escolha a Cidade", df['Nome da Cidade'].unique())
 df_filtrado = df[df['Nome da Cidade'] == cidade_selecionada]
 
-# Mostrar gráficos de inscritos da cidade selecionada
-st.write(f"### Inscritos em {cidade_selecionada}")
+st.write(f"Total de inscritos em {cidade_selecionada}: {df_filtrado['Inscritos'].sum()}")
 
-# Mostrar o número total de inscritos da cidade selecionada
-numero_de_inscritos = df_filtrado.shape[0]
-st.write(f"Total de inscritos em {cidade_selecionada}: {numero_de_inscritos}")
+fig_cidade = px.bar(df_filtrado,
+                    x='Nome da Cidade',
+                    y='Inscritos',
+                    labels={'Nome da Cidade': 'Cidade', 'Inscritos': 'Número de Inscritos'},
+                    title=f'Inscrições em {cidade_selecionada}')
+st.plotly_chart(fig_cidade, use_container_width=True)
 
-# Gráfico de barras apenas com a cidade selecionada
-st.write(f"### Inscritos em {cidade_selecionada}")
-cidade_inscricoes = df_filtrado['Nome da Cidade'].value_counts()
-fig_barras_selecionada = px.bar(cidade_inscricoes, 
-                                x=cidade_inscricoes.index, 
-                                y=cidade_inscricoes.values,
-                                labels={'x': 'Cidade', 'y': 'Número de Inscritos'},
-                                title=f'Inscrições na Cidade de {cidade_selecionada}')
-st.plotly_chart(fig_barras_selecionada)
+# DOWNLOAD DOS DADOS ==========================================
+st.markdown("### Download dos Dados Filtrados")  # <-- MODIFICAÇÃO
+csv = df_filtrado.to_csv(index=False).encode('utf-8')
+st.download_button(
+    label="📂 Baixar CSV",
+    data=csv,
+    file_name=f"inscritos_{cidade_selecionada}.csv",
+    mime='text/csv'
+)
 
-
-
-
-
+# FIM DO CÓDIGO ================================================

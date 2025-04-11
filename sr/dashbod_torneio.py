@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import io
-import os               # <--- Adicione esta linha!
-from PIL import Image   # <--- E esta também, se ainda não adicionou
+import os               
+from PIL import Image   
 
-# --- Configuração de Estilo ---
+
 st.set_page_config(
     page_title="Torneio de Xadrez Online",
     page_icon="♟️",
@@ -13,14 +13,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- Barra Lateral ---
+
 with st.sidebar:
     st.header("📌 Menu")
-
+    # 🥈 Imagem do 2º Lugar - Ricardo Abdon
+    st.subheader("🥈 2º Lugar - Ricardo Abdon")
+    caminho_ricardo = os.path.join("sr", "Ricardo_Abdon.jpg")  
+    imagem_ricardo = Image.open(caminho_ricardo)
+    st.image(imagem_ricardo, caption="Ricardo Abdon", use_container_width=True)
+    
+    
     # 🥉 Imagem do 3º Lugar - Daniel Malta
+   
     st.subheader("🥉 3º Lugar - Daniel Malta")
     caminho_imagem = os.path.join("sr", "daniel_malta.jpg")
-  # ou ajuste o caminho se estiver em outra pasta
     imagem = Image.open(caminho_imagem)
     st.image(imagem, caption="Daniel Malta", use_column_width=True)
 
