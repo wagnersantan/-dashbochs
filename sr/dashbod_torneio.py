@@ -2,9 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import io
-import os               
-from PIL import Image   
-
+import os
+from PIL import Image
 
 st.set_page_config(
     page_title="Torneio de Xadrez Online",
@@ -13,26 +12,23 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
 with st.sidebar:
     st.header("📌 Menu")
     # 🥈 Imagem do 2º Lugar - Ricardo Abdon
     st.subheader("🥈 2º Lugar - Ricardo Abdon")
-    caminho_ricardo = os.path.join("sr", "Ricardo_Abdon.jpg")  
+    caminho_ricardo = os.path.join("sr", "Ricardo_Abdon.jpg")
     imagem_ricardo = Image.open(caminho_ricardo)
     st.image(imagem_ricardo, caption="Ricardo Abdon", use_container_width=True)
-    
-    
+
     # 🥉 Imagem do 3º Lugar - Daniel Malta
-   
     st.subheader("🥉 3º Lugar - Daniel Malta")
     caminho_imagem = os.path.join("sr", "daniel_malta.jpg")
     imagem = Image.open(caminho_imagem)
     st.image(imagem, caption="Daniel Malta", use_column_width=True)
 
     arquivos = st.file_uploader(
-        "📂 Carregue os arquivos do torneio (CSV)", 
-        type=['csv'], 
+        "📂 Carregue os arquivos do torneio (CSV)",
+        type=['csv'],
         accept_multiple_files=True
     )
 
@@ -56,6 +52,7 @@ if not arquivos:
 4,,majCRVG,1800,2.0,2.5,1981.4,Torneio 23/03/2025
 5,,ILUMINATE38,2289,2.0,2.0,1887.6,Torneio 23/03/2025"""
 
+    # Dados padrão adicionais
     csv_padrao_2 = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
 1,,ILUMINATE38,2280,4.0,8.0,2502.5,Torneio 30/03/2025
 2,,maalta7,2021,3.0,4.0,2242.5,Torneio 30/03/2025
@@ -63,6 +60,7 @@ if not arquivos:
 4,,Hunter04,1906,2.0,3.0,2040.75,Torneio 30/03/2025
 5,,majCRVG,1791,2.0,2.0,1710.3334,Torneio 30/03/2025"""
 
+    # Dados adicionais para os novos arquivos
     csv_padrao_3 = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
 1,,ILUMINATE38,2304,5.5,16.75,2387.0,Torneio 06/04/2025
 2,,Capital78,2127,5.0,15.0,2288.8333,Torneio 06/04/2025
@@ -74,7 +72,29 @@ if not arquivos:
 8,,ramonnlucass,2040,2.0,4.5,1772.5,Torneio 06/04/2025
 9,,wagsantana,1945,1.5,4.25,1545.8,Torneio 06/04/2025"""
 
-    arquivos = [io.StringIO(csv_padrao_1), io.StringIO(csv_padrao_2), io.StringIO(csv_padrao_3)]
+    csv_padrao_4 = """Rank,Title,Username,Rating,Points,Tie Break,Performance
+1,,wagsantana,1953,5.0,10.0,2276.6
+2,,ILUMINATE38,2272,4.0,6.0,2015.8
+3,,Capital78,2020,3.0,5.0,1789.5
+4,,Rogeriox,1583,2.0,1.0,1739.2
+5,,Matheus-Salaomoa1,1308,1.0,0.5,1467.5
+6,,Welvermon,1658,0.0,0.0,1450.0"""
+
+    csv_padrao_5 = """Rank,Title,Username,Rating,Points,Tie Break,Performance
+1,,maalta7,2018,4.5,9.25,2195.4
+2,,majCRVG,1824,4.0,6.5,2134.2
+3,,MurylloMendes6991,1865,3.0,3.5,1926.0
+4,,ILUMINATE38,2231,2.5,3.25,1752.8
+5,,Rogeriox,1603,1.0,0.0,1578.4
+6,,radical073,1454,0.0,0.0,1408.2"""
+
+    arquivos = [
+        io.StringIO(csv_padrao_1),
+        io.StringIO(csv_padrao_2),
+        io.StringIO(csv_padrao_3),
+        io.StringIO(csv_padrao_4),
+        io.StringIO(csv_padrao_5)
+    ]
 
 # --- Processamento dos Dados ---
 df_list = []
@@ -150,5 +170,3 @@ if df_list:
 
             csv_torneio = df_torneio.to_csv(index=False).encode('utf-8')
             st.download_button(f"📥 Baixar Dados de {torneio}", data=csv_torneio, file_name=f"{torneio}.csv", mime="text/csv")
-
-
