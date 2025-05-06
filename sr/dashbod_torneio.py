@@ -74,17 +74,7 @@ if not arquivos:
 8,,ramonnlucass,2040,2.0,4.5,1772.5,Torneio 06/04/2025
 9,,wagsantana,1945,1.5,4.25,1545.8,Torneio 06/04/2025"""
 
-
-      csv_padrao_4 = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
-1,,wagsantana,1953,5.0,10.0,2276.6,Torneio 20/04/2025
-2,,ILUMINATE38,2272,4.0,6.0,2015.8,Torneio 20/04/2025
-3,,Capital78,2020,3.0,5.0,1789.5,Torneio 20/04/2025
-4,,Rogeriox,1583,2.0,1.0,1739.2,Torneio 20/04/2025
-5,,Matheus-Salaomoa1,1308,1.0,0.5,1467.5,Torneio 20/04/2025
-6,,Welvermon,1658,0.0,0.0,1450.0,Torneio 20/04/2025"""
-
-
-    arquivos = [io.StringIO(csv_padrao_1), io.StringIO(csv_padrao_2), io.StringIO(csv_padrao_3)  io.StringIO(csv_padrao_4)]
+    arquivos = [io.StringIO(csv_padrao_1), io.StringIO(csv_padrao_2), io.StringIO(csv_padrao_3)]
 
 # --- Processamento dos Dados ---
 df_list = []
