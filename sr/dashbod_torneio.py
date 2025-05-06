@@ -51,7 +51,7 @@ if not arquivos:
 3,,Capital78,2119,2.5,3.75,2017.6,Torneio 23/03/2025
 4,,majCRVG,1800,2.0,2.5,1981.4,Torneio 23/03/2025
 5,,ILUMINATE38,2289,2.0,2.0,1887.6,Torneio 23/03/2025"""
-
+    
     # Dados padrão adicionais
     csv_padrao_2 = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
 1,,ILUMINATE38,2280,4.0,8.0,2502.5,Torneio 30/03/2025
@@ -60,7 +60,6 @@ if not arquivos:
 4,,Hunter04,1906,2.0,3.0,2040.75,Torneio 30/03/2025
 5,,majCRVG,1791,2.0,2.0,1710.3334,Torneio 30/03/2025"""
 
-    # Dados adicionais para os novos arquivos
     csv_padrao_3 = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
 1,,ILUMINATE38,2304,5.5,16.75,2387.0,Torneio 06/04/2025
 2,,Capital78,2127,5.0,15.0,2288.8333,Torneio 06/04/2025
@@ -72,21 +71,21 @@ if not arquivos:
 8,,ramonnlucass,2040,2.0,4.5,1772.5,Torneio 06/04/2025
 9,,wagsantana,1945,1.5,4.25,1545.8,Torneio 06/04/2025"""
 
-    csv_padrao_4 = """Rank,Title,Username,Rating,Points,Tie Break,Performance
-1,,wagsantana,1953,5.0,10.0,2276.6
-2,,ILUMINATE38,2272,4.0,6.0,2015.8
-3,,Capital78,2020,3.0,5.0,1789.5
-4,,Rogeriox,1583,2.0,1.0,1739.2
-5,,Matheus-Salaomoa1,1308,1.0,0.5,1467.5
-6,,Welvermon,1658,0.0,0.0,1450.0"""
+    csv_padrao_4 = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
+1,,wagsantana,1953,5.0,10.0,2276.6,Torneio 13/04/2025
+2,,ILUMINATE38,2272,4.0,6.0,2015.8,Torneio 13/04/2025
+3,,Capital78,2020,3.0,5.0,1789.5,Torneio 13/04/2025
+4,,Rogeriox,1583,2.0,1.0,1739.2,Torneio 13/04/2025
+5,,Matheus-Salaomoa1,1308,1.0,0.5,1467.5,Torneio 13/04/2025
+6,,Welvermon,1658,0.0,0.0,1450.0,Torneio 13/04/2025"""
 
-    csv_padrao_5 = """Rank,Title,Username,Rating,Points,Tie Break,Performance
-1,,maalta7,2018,4.5,9.25,2195.4
-2,,majCRVG,1824,4.0,6.5,2134.2
-3,,MurylloMendes6991,1865,3.0,3.5,1926.0
-4,,ILUMINATE38,2231,2.5,3.25,1752.8
-5,,Rogeriox,1603,1.0,0.0,1578.4
-6,,radical073,1454,0.0,0.0,1408.2"""
+    csv_padrao_5 = """Rank,Title,Nomes dos Enxadristas,Rating,Points,Tie Break,Performance,Torneio
+1,,maalta7,2018,4.5,9.25,2195.4,Torneio 20/04/2025
+2,,majCRVG,1824,4.0,6.5,2134.2,Torneio 20/04/2025
+3,,MurylloMendes6991,1865,3.0,3.5,1926.0,Torneio 20/04/2025
+4,,ILUMINATE38,2231,2.5,3.25,1752.8,Torneio 20/04/2025
+5,,Rogeriox,1603,1.0,0.0,1578.4,Torneio 20/04/2025
+6,,radical073,1454,0.0,0.0,1408.2,Torneio 20/04/2025"""
 
     arquivos = [
         io.StringIO(csv_padrao_1),
@@ -153,20 +152,12 @@ if df_list:
             st.markdown("### 🏆 Pódio dos Vencedores")
             top3 = classificacao.head(3)
             podium = {1: "🥇", 2: "🥈", 3: "🥉"}
-            for i, row in enumerate(top3.itertuples(), start=1):
-                st.markdown(f"**{podium[i]} {row[1]} - {row[2]} pontos**")
+            for i in range(3):
+                pos = i + 1
+                st.markdown(f"{podium[pos]} {top3.iloc[i]['Nomes dos Enxadristas']} - {top3.iloc[i]['Points']} pontos")
 
-            num_jogadores = st.slider(f"👤 Jogadores no gráfico ({torneio})", 5, df_torneio.shape[0], 10)
-            fig = px.bar(classificacao.head(num_jogadores),
-                         x="Points",
-                         y="Nomes dos Enxadristas",
-                         text="Points",
-                         orientation='h',
-                         color="Points",
-                         color_continuous_scale="blues",
-                         title=f"Pontos por Jogador - {torneio}")
-            fig.update_layout(yaxis={'categoryorder': 'total ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+            fig = px.bar(df_torneio, x="Nomes dos Enxadristas", y="Points", title=f"📊 Pontuação - {torneio}", color="Points")
+            st.plotly_chart(fig)
 
-            csv_torneio = df_torneio.to_csv(index=False).encode('utf-8')
-            st.download_button(f"📥 Baixar Dados de {torneio}", data=csv_torneio, file_name=f"{torneio}.csv", mime="text/csv")
+
+
