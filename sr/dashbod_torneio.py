@@ -84,7 +84,7 @@ if not arquivos:
 6,,Welvermon,1658,0.0,0.0,1450.0,Torneio 20/04/2025"""
 
 
-    arquivos = [io.StringIO(csv_padrao_1), io.StringIO(csv_padrao_2), io.StringIO(csv_padrao_3)]
+    arquivos = [io.StringIO(csv_padrao_1), io.StringIO(csv_padrao_2), io.StringIO(csv_padrao_3)  io.StringIO(csv_padrao_4)]
 
 # --- Processamento dos Dados ---
 df_list = []
